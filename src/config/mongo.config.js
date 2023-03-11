@@ -9,9 +9,9 @@ const configConnection = {
   },
 };
 
-const mongoDBconnection = async () => {
+const mongoDBconnection = () => {
   try {
-    await connect(configConnection.url, configConnection.options);
+    connect(configConnection.url, configConnection.options);
     console.log(`* ~ file: mongo.config.js:15 ~ mongoDBconnection ~ URL: ${configConnection.url.substring(0, 25)}`);
   } catch (error) {
     console.log("* ~ file: mongo.config.js:17 ~ mongoDBconnection ~ error:", error);
