@@ -1,14 +1,10 @@
 const { Router } = require("express");
 const ProductsManager = require("../managers/products.manager");
-const { uploader } = require("../utils/uploader");
-const path = require("path");
-
-const productsDbPath = path.join(__dirname, "../db/local/products.json");
 
 class ProductsRoutes {
   path = "/products";
   router = Router();
-  productsManager = new ProductsManager(productsDbPath);
+  productsManager = new ProductsManager();
 
   constructor() {
     this.initProductRoutes();
@@ -17,16 +13,12 @@ class ProductsRoutes {
   initProductRoutes() {
     // Insert Products
     this.router.get(`${this.path}/insert`, async (req, res) => {
-      try {
-        const products = await this.productsManager.insertProducts();
-        res.status(200).json({
-          message: "Products inserted successfully",
-          products,
-        });
-      } catch (error) {
-        console.log("* ~ file: products.routes.js:29 ~ Insert Products Data ~ error:", error);
-      }
-    })
+      const products = await this.productsManager.insertProducts();
+      res.status(200).json({
+        message: "Products inserted successfully",
+        products,
+      });
+    });
 
     // Get Products
     this.router.get(`${this.path}`, async (req, res) => {
@@ -58,27 +50,20 @@ class ProductsRoutes {
     });
 
     // Create New Product
-    this.router.post(`${this.path}`, uploader.single("thumbnail"), async (req, res) => {
+    this.router.post(`${this.path}`, async (req, res) => {
       const { title, description, code, price, status, stock, category, thumbnail } = req.body;
-      const product = req.body;
 
-      // const file = req.file;
-
-      // if (!file) {
-      //   return res.status(400).send({ message: "Cannot process files" });
-      // }
-
-      // product.thumbnail = `http://localhost:5000/public/uploads/${file.originalname}`;
-
+      // * TODO: Move to middlewares -> 
       if (!title || !description || !code || !price || !status || !stock || !category || !thumbnail) {
         return res.status(400).json({ message: "All product fields are mandatory" });
       }
+      // <- *
+      const product = await this.productsManager.addProduct(req.body);
 
-      const result = await this.productsManager.addProduct(product);
-
-      if (!result) {
+      if (!product) {
         res.status(405).json({ message: `Product with ${code} already exists` })
       }
+
       return res.status(200).json({ product });
     }
     );
@@ -86,20 +71,21 @@ class ProductsRoutes {
     // Update Product By Id
     this.router.put(`${this.path}/:pid`, async (req, res) => {
       const pid = req.params.pid;
-      const product = await this.productsManager.updateProduct(pid, req.body);
+      const product = await this.productsManager.getProductById(pid);
 
       if (!product) {
-        return res.status(200).json({ message: `Product ${pid} Not Found`, });
+        return res.status(404).json({ message: `Product ${pid} Not Found`, });
       }
 
-      return res.status(200).json({ product });
+      await this.productsManager.updateProduct(pid, req.body);
+      return res.status(200).json({ message: `Product ${pid} updated successfully` });
     });
 
     // Delete Product By Id
     this.router.delete(`${this.path}/:pid`, async (req, res) => {
       const pid = req.params.pid;
       await this.productsManager.deleteProductById(pid);
-      return res.status(200).json({ message: "Product deleted successfully" });
+      return res.status(200).json({ message: `Product ${pid} deleted successfully` });
     });
   }
 }

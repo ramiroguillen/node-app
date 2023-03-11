@@ -1,19 +1,25 @@
 const { Router } = require("express");
 const CartsManager = require("../managers/carts.manager");
-const path = require("path");
-
-const cartsDbPath = path.join(__dirname, "../db/local/carts.json");
 
 class CartsRoutes {
-  path = "/cart";
+  path = "/carts";
   router = Router();
-  cartsManager = new CartsManager(cartsDbPath);
+  cartsManager = new CartsManager();
 
   constructor() {
     this.initCartsRoutes();
   }
 
   initCartsRoutes() {
+
+    // Insert Cart
+    this.router.get(`${this.path}/insert`, async (req, res) => {
+      const carts = await this.cartsManager.insertCarts();
+      res.status(200).json({
+        message: "Products inserted successfully",
+        carts,
+      })
+    });
     // Create Cart
     this.router.post(`${this.path}/`, async (req, res) => {
       await this.cartsManager.addCart();
@@ -22,8 +28,7 @@ class CartsRoutes {
 
     // Get Cart Products By Cart Id
     this.router.get(`${this.path}/:cid`, async (req, res) => {
-      const cartId = Number(req.params.cid);
-      const products = await this.cartsManager.getProductsByCartId(cartId);
+      const products = await this.cartsManager.getProductsByCartId(req.params.cid);
 
       if (!products) {
         return res.status(404).json({ message: "Cart not found" });
@@ -33,10 +38,9 @@ class CartsRoutes {
 
     // Add Product to Cart
     this.router.post(`${this.path}/:cid/products/:pid`, async (req, res) => {
-      const cartId = Number(req.params.cid);
-      const productId = Number(req.params.pid);
-      await this.cartsManager.addProductToCart(cartId, productId);
-      return res.status(200).json({ message: `Product: ${productId} added to Cart: ${cartId}` });
+      const { cid, pid } = req.params;
+      await this.cartsManager.addProductToCart(cid, pid);
+      return res.status(200).json({ message: `Product: ${pid} added to Cart: ${cid}` });
     });
   }
 }
