@@ -13,7 +13,7 @@ class ProductsManager {
       this.products.push({ id, ...product });
       return await fs.writeFile(this.path, JSON.stringify(this.products));
     } catch (error) {
-      console.log("* ~ file: productManager.js:16 ~ ProductManager ~ addProduct ~ error:", error);
+      console.log("* ~ file: products.manager.js:16 ~ ProductManager ~ addProduct ~ error:", error);
     }
   }
 
@@ -22,7 +22,7 @@ class ProductsManager {
       const data = await fs.readFile(this.path);
       return JSON.parse(data);
     } catch (error) {
-      console.log("* ~ file: productManager.js:25 ~ ProductManager ~ getProducts ~ error:", error);
+      console.log("* ~ file: products.manager.js:25 ~ ProductManager ~ getProducts ~ error:", error);
     }
   }
 
@@ -31,7 +31,7 @@ class ProductsManager {
       this.products = await this.getProducts();
       return this.products.find((product) => product.id === id);
     } catch (error) {
-      console.log("* ~ file: productManager.js:34 ~ ProductManager ~ getProductById ~ error:", error);
+      console.log("* ~ file: products.manager.js:34 ~ ProductManager ~ getProductById ~ error:", error);
     }
   }
 
@@ -46,7 +46,7 @@ class ProductsManager {
       this.products[productId] = { ...product, ...update };
       return await fs.writeFile(this.path, JSON.stringify(this.products));
     } catch (error) {
-      console.log("* ~ file: productManager.js:49 ~ ProductManager ~ updateProduct ~ error:", error);
+      console.log("* ~ file: products.manager.js:49 ~ ProductManager ~ updateProduct ~ error:", error);
     }
   }
 
@@ -56,7 +56,7 @@ class ProductsManager {
       const filteredProducts = products.filter((products) => products.id !== id);
       fs.writeFile(this.path, JSON.stringify(filteredProducts), "utf-8");
     } catch (error) {
-      console.log("* ~ file: productManager.js:59 ~ ProductManager ~ deleteProductById ~ error:", error);
+      console.log("* ~ file: products.manager.js:59 ~ ProductManager ~ deleteProductById ~ error:", error);
     }
   }
 }

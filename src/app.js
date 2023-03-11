@@ -1,10 +1,11 @@
 const express = require("express");
 const cors = require("cors");
 const displayRoutes = require("express-routemap");
+const handlebars = require("express-handlebars");
 
-const { API_VERSION, NODE_ENV, PORT } = require("./config/env.config");
+const { API_VERSION, NODE_ENV, PORT } = require("./config/config");
 const corsConfig = require("./config/cors.config");
-const { mongoDBconnection } = require("./config/mongo.config");
+const { mongoDBconnection } = require("./dao/mongo/mongo.config");
 
 class App {
   app;
@@ -20,6 +21,7 @@ class App {
     this.connectToDatabase();
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
+    this.initHandlebars();
   }
 
   /* Server */
@@ -37,7 +39,7 @@ class App {
   async connectToDatabase() {
     await mongoDBconnection();
   }
-  
+
   /* Middlewares */
   initializeMiddlewares() {
     this.app.use(cors(corsConfig));
@@ -60,6 +62,13 @@ class App {
       console.log(`* ~ Running on "${this.env}"`);
       console.log(`* ~ App listening on the port ${this.port}`);
     });
+  }
+
+  /* handlebars */
+  initHandlebars() {
+    this.app.engine("handlebars", handlebars.engine());
+    this.app.set("views", __dirname + "/views");
+    this.app.set("view engine", "handlebars");
   }
 }
 

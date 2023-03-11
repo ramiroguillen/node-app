@@ -20,14 +20,16 @@ class ProductsRoutes {
       const limit = Number(req.query.limit);
       const products = await this.productsManager.getProducts();
 
-      if (limit || limit >= products.length) {
+      if (!limit || limit >= products.length)
         return res.status(200).json({
-          products: products.slice(0, limit ? limit : products.length),
+          products,
           message: `Getting all products, be carefull with your ${limit}`,
         });
-      }
 
-      return res.status(200).json({ products, message: "SUCCESS" });
+      return res.status(200).json({
+        products: products.slice(0, limit),
+        message: "SUCCESS",
+      });
     });
 
     // Get Product By Id

@@ -19,7 +19,7 @@ class CartsManager {
       this.carts.push({ id, products: [] });
       return await fs.writeFile(this.path, JSON.stringify(this.carts));
     } catch (error) {
-      console.log("* ~ file: cartManager.js:22 ~ CartsManager ~ addCart ~ error:", error);
+      console.log("* ~ file: carts.manager.js:22 ~ CartsManager ~ addCart ~ error:", error);
     }
   }
 
@@ -27,7 +27,7 @@ class CartsManager {
     try {
       return JSON.parse(await fs.readFile(this.path));
     } catch (error) {
-      console.log("* ~ file: cartManager.js:30 ~ CartsManager ~ getCarts ~ error:", error);
+      console.log("* ~ file: carts.manager.js:30 ~ CartsManager ~ getCarts ~ error:", error);
     }
   }
 
@@ -36,7 +36,7 @@ class CartsManager {
       this.carts = await this.getCarts();
       return this.carts.find((cart) => cart.id === id).products;
     } catch (error) {
-      console.log("* ~ file: cartManager.js:39 ~ CartsManager ~ getProductsByCartId ~ error:", error);
+      console.log("* ~ file: carts.manager.js:39 ~ CartsManager ~ getProductsByCartId ~ error:", error);
     }
   }
 
@@ -55,7 +55,7 @@ class CartsManager {
       }
       return await fs.writeFile(this.path, JSON.stringify(this.carts));
     } catch (error) {
-      console.log("* ~ file: cartManager.js:56 ~ CartsManager ~ getProductsByCartId ~ error:", error);
+      console.log("* ~ file: carts.manager.js:56 ~ CartsManager ~ getProductsByCartId ~ error:", error);
     }
   }
 }
