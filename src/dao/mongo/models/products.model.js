@@ -29,7 +29,7 @@ const productsSchema = new mongoose.Schema({
         required: true
     },
     thumbnail: {
-        type: String,
+        type: File,
         required: true
     },
 });

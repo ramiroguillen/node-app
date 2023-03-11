@@ -13,5 +13,5 @@ const chatSchema = new mongoose.Schema({
     },
 });
 
-const productsModel = mongoose.model(collectionName, chatSchema);
-module.exports = cartsModel;
+const chatModel = mongoose.model(collectionName, chatSchema);
+module.exports = chatModel;
