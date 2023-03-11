@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const displayRoutes = require("express-routemap");
 
-const { API_VERSION, NODE_ENV, PORT } = require("./config/config");
+const { API_VERSION, NODE_ENV, PORT } = require("./config/env.config");
 const corsConfig = require("./config/cors.config");
 const { mongoDBconnection } = require("./config/mongo.config");
 

@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const CartsManager = require("../classes/cartsManager");
+const CartsManager = require("../managers/carts.manager");
 const path = require("path");
 
 const cartsDbPath = path.join(__dirname, "../db/local/carts.json");

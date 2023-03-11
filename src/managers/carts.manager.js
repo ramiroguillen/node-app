@@ -1,5 +1,5 @@
 const fs = require("fs/promises");
-const ProductsManager = require("./productsManager");
+const ProductsManager = require("./products.manager");
 const path = require("path");
 
 const productsDbPath = path.join(__dirname, "./db/local/products.json");
@@ -45,7 +45,7 @@ class CartsManager {
       const product = await this.productsManager.getProductById(pid);
       const cart = await this.getProductsByCartId(cid);
 
-      // TODO: ADD THE POSSIBILITY OF ADD MORE THAN 1 OF THE SAME PRODUCT AT ONCE
+      // TODO: ADD THE POSSIBILITY OF ADDING SEVERAL PRODUCTS OF THE SAME TYPE AT ONCE
       
       if (cart.some((item) => item.product === product.id)) {
         const index = cart.findIndex((item) => item.product === product.id);

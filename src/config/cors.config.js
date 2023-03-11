@@ -1,4 +1,4 @@
-const { ORIGIN } = require("./config");
+const { ORIGIN } = require("./env.config");
 
 const corsConfig = {
   allowedHeaders: "*",

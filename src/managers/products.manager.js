@@ -38,7 +38,7 @@ class ProductsManager {
   async updateProduct(id, update) {
     try {
       this.products = await this.getProducts();
-      let product = await this.getProductById(id);
+      const product = await this.getProductById(id);
 
       if (!product) return product;
 

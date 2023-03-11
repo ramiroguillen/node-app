@@ -1,6 +1,6 @@
 const { Router } = require("express");
-const ProductsManager = require("../classes/productsManager");
-const { uploader } = require("../utils/utils");
+const ProductsManager = require("../managers/products.manager");
+const { uploader } = require("../utils/uploader");
 const path = require("path");
 
 const productsDbPath = path.join(__dirname, "../db/local/products.json");
@@ -46,13 +46,13 @@ class ProductsRoutes {
     this.router.post(`${this.path}`, uploader.single("thumbnail"), async (req, res) => {
       const { title, description, code, price, stock, category } = req.body;
       const product = req.body;
-      const thumbnail = req.file;
+      const file = req.file;
 
-      if (!thumbnail) {
+      if (!file) {
         return res.status(400).send({ message: "Cannot process files" });
       }
 
-      product.thumbnail = `http://localhost:5000/public/uploads/${thumbnail.originalname}`;
+      product.thumbnail = `http://localhost:5000/public/uploads/${file.originalname}`;
 
       if (!title || !description || !code || !price || !stock || !category) {
         return res.status(400).json({ message: "All product files are mandatory" });
