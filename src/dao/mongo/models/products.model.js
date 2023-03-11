@@ -11,6 +11,10 @@ const productsSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    category: {
+        type: String,
+        required: true
+    },
     code: {
         type: String,
         required: true,
@@ -29,7 +33,7 @@ const productsSchema = new mongoose.Schema({
         required: true
     },
     thumbnail: {
-        type: File,
+        type: String,
         required: true
     },
 });
